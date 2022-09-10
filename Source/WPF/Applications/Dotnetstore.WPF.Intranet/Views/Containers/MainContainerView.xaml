@@ -6,7 +6,7 @@
         xmlns:customControls="clr-namespace:Dotnetstore.WPF.CustomControls;assembly=Dotnetstore.WPF.CustomControls"
         xmlns:containers="clr-namespace:Dotnetstore.WPF.Intranet.Views.Containers"
         mc:Ignorable="d" MouseDown="MainContainerView_OnMouseDown" WindowStartupLocation="CenterScreen"
-        x:Name="ResponsiveWindow" Style="{StaticResource WindowStyle}">
+        x:Name="ResponsiveWindow" Style="{StaticResource WindowStyle}" WindowState="{Binding WindowState}">
     <Window.InputBindings>
         <KeyBinding Modifiers="Alt"
                     Key="F4"

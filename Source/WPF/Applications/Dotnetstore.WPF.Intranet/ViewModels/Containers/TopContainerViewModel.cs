@@ -10,11 +10,19 @@ public class TopContainerViewModel : Disposable, ITopContainerViewModel
 
     public IRelayCommand? CloseApplicationCommand { get; set; }
 
+    public IRelayCommand? SetWindowRestoreCommand { get; set; }
+
     public TopContainerViewModel(
         IEventService eventService)
     {
         _eventService = eventService;
         CloseApplicationCommand = new RelayCommand(ExecuteCloseApplication);
+        SetWindowRestoreCommand = new RelayCommand(ExecuteSetWindowRestore);
+    }
+
+    private void ExecuteSetWindowRestore()
+    {
+        _eventService?.RunSetWindowRestore();
     }
 
     private void ExecuteCloseApplication()
@@ -29,6 +37,7 @@ public class TopContainerViewModel : Disposable, ITopContainerViewModel
             _eventService = null;
 
             CloseApplicationCommand = null;
+            SetWindowRestoreCommand = null;
         }
 
         base.DisposeManaged();
