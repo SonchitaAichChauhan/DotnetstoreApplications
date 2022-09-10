@@ -28,12 +28,8 @@ public partial class MainContainerViewModel : BaseViewModel, IMainContainerViewM
         CloseApplicationCommand = new RelayCommand(ExecuteCloseApplication);
 
         _eventService.CloseApplication += EventServiceOnCloseApplication;
+        _eventService.SetWindowMinimize += EventServiceOnSetWindowMinimize;
         _eventService.SetWindowRestore += EventServiceOnSetWindowRestore;
-    }
-
-    private void EventServiceOnSetWindowRestore(object? sender, EventArgs e)
-    {
-        SetRestoreWindow();
     }
 
     public IRelayCommand? CloseApplicationCommand { get; set; }
@@ -59,11 +55,6 @@ public partial class MainContainerViewModel : BaseViewModel, IMainContainerViewM
         base.DisposeManaged();
     }
 
-    private void SetRestoreWindow()
-    {
-        WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
-    }
-
     private static void CloseApplication()
     {
         var result = System.Windows.MessageBox.Show(
@@ -83,8 +74,28 @@ public partial class MainContainerViewModel : BaseViewModel, IMainContainerViewM
         CloseApplication();
     }
 
+    private void EventServiceOnSetWindowMinimize(object? sender, EventArgs e)
+    {
+        SetMinimizeWindow();
+    }
+
+    private void EventServiceOnSetWindowRestore(object? sender, EventArgs e)
+    {
+        SetRestoreWindow();
+    }
+
     private void ExecuteCloseApplication()
     {
         _eventService?.RunCloseApplication();
+    }
+
+    private void SetMinimizeWindow()
+    {
+        WindowState = WindowState.Minimized;
+    }
+
+    private void SetRestoreWindow()
+    {
+        WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
     }
 }
