@@ -15,9 +15,11 @@ internal static class ServiceCollectionBootStrap
         serviceCollection.AddSingleton<IApplicationService, ApplicationService>();
         serviceCollection.AddSingleton<IEventService, EventService>();
 
+        serviceCollection.AddSingleton<IBottomContainerViewModel, BottomContainerViewModel>();
         serviceCollection.AddSingleton<IMainContainerViewModel, MainContainerViewModel>();
         serviceCollection.AddSingleton<ITopContainerViewModel, TopContainerViewModel>();
 
+        serviceCollection.AddSingleton<BottomContainerView>();
         serviceCollection.AddSingleton<MainContainerView>();
         serviceCollection.AddSingleton<TopContainerView>();
     }

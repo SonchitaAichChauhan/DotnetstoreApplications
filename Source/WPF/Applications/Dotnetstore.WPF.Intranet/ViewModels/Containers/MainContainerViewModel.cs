@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Dotnetstore.WPF.Intranet.Interfaces;
 using Dotnetstore.WPF.Nuget.Core.ViewModels;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Dotnetstore.WPF.Intranet.ViewModels.Containers;
@@ -11,16 +12,23 @@ public partial class MainContainerViewModel : BaseViewModel, IMainContainerViewM
 {
     private IEventService? _eventService;
 
+    private IBottomContainerViewModel? _bottomContainerViewModel;
+
     [ObservableProperty]
-    private ITopContainerViewModel _topContainerViewModel;
+    private IBottomContainerViewModel? _currentBottomContainerViewModel;
+
+    [ObservableProperty]
+    private ITopContainerViewModel? _topContainerViewModel;
 
     [ObservableProperty]
     private WindowState _windowState;
 
     public MainContainerViewModel(
+        IBottomContainerViewModel bottomContainerViewModel,
         IEventService eventService,
         ITopContainerViewModel topContainerViewModel)
     {
+        _bottomContainerViewModel = bottomContainerViewModel;
         _eventService = eventService;
         _topContainerViewModel = topContainerViewModel;
 
@@ -34,8 +42,20 @@ public partial class MainContainerViewModel : BaseViewModel, IMainContainerViewM
 
     public IRelayCommand? CloseApplicationCommand { get; set; }
 
-    void IMainContainerViewModel.Load()
+    async Task IMainContainerViewModel.LoadAsync()
     {
+        await LoadIBottomContainerViewModelAsync();
+    }
+
+    private async Task LoadIBottomContainerViewModelAsync()
+    {
+        if (_bottomContainerViewModel == null)
+        {
+            return;
+        }
+
+        await _bottomContainerViewModel.LoadAsync();
+        CurrentBottomContainerViewModel = _bottomContainerViewModel;
     }
 
     protected override void DisposeManaged()
@@ -49,7 +69,11 @@ public partial class MainContainerViewModel : BaseViewModel, IMainContainerViewM
                 _eventService = null;
             }
 
+            _bottomContainerViewModel = null;
+
+            CurrentBottomContainerViewModel = null;
             CloseApplicationCommand = null;
+            TopContainerViewModel = null;
         }
 
         base.DisposeManaged();

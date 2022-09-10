@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Dotnetstore.WPF.Intranet.Interfaces;
-using Dotnetstore.WPF.Nuget.Core.Abstracts;
+using Dotnetstore.WPF.Nuget.Core.ViewModels;
 
 namespace Dotnetstore.WPF.Intranet.ViewModels.Containers;
 
-public class TopContainerViewModel : Disposable, ITopContainerViewModel
+public class TopContainerViewModel : BaseViewModel, ITopContainerViewModel
 {
     private IEventService? _eventService;
 

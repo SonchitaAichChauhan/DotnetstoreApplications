@@ -1,8 +1,10 @@
-﻿namespace Dotnetstore.WPF.Intranet.Interfaces;
+﻿using System.Threading.Tasks;
+
+namespace Dotnetstore.WPF.Intranet.Interfaces;
 
 public interface IApplicationService
 {
     IApplicationService? LoadSettings();
 
-    void Run();
+    Task RunAsync();
 }
