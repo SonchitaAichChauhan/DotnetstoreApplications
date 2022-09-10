@@ -29,6 +29,14 @@
         <StackPanel Grid.Column="1"
                     Grid.Row="0"
                     Orientation="Horizontal">
+            <Button ToolTip="Minimize"
+                    Style="{StaticResource TopButtonStyle}"
+                    Command="{Binding SetWindowMinimizeCommand}">
+                <materialDesign:PackIcon Kind="WindowMinimize"
+                                         Width="16"
+                                         Height="16"
+                                         Foreground="{StaticResource ForeGround}"/>
+            </Button>
             <Button ToolTip="Restore"
                     Style="{StaticResource TopButtonStyle}"
                     Command="{Binding SetWindowRestoreCommand}">

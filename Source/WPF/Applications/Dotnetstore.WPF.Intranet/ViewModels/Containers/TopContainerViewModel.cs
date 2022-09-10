@@ -8,27 +8,21 @@ public class TopContainerViewModel : Disposable, ITopContainerViewModel
 {
     private IEventService? _eventService;
 
-    public IRelayCommand? CloseApplicationCommand { get; set; }
-
-    public IRelayCommand? SetWindowRestoreCommand { get; set; }
-
     public TopContainerViewModel(
         IEventService eventService)
     {
         _eventService = eventService;
+
         CloseApplicationCommand = new RelayCommand(ExecuteCloseApplication);
+        SetWindowMinimizeCommand = new RelayCommand(ExecuteSetWindowMinimize);
         SetWindowRestoreCommand = new RelayCommand(ExecuteSetWindowRestore);
     }
 
-    private void ExecuteSetWindowRestore()
-    {
-        _eventService?.RunSetWindowRestore();
-    }
+    public IRelayCommand? CloseApplicationCommand { get; set; }
 
-    private void ExecuteCloseApplication()
-    {
-        _eventService?.RunCloseApplication();
-    }
+    public IRelayCommand? SetWindowMinimizeCommand { get; set; }
+
+    public IRelayCommand? SetWindowRestoreCommand { get; set; }
 
     protected override void DisposeManaged()
     {
@@ -37,9 +31,25 @@ public class TopContainerViewModel : Disposable, ITopContainerViewModel
             _eventService = null;
 
             CloseApplicationCommand = null;
+            SetWindowMinimizeCommand = null;
             SetWindowRestoreCommand = null;
         }
 
         base.DisposeManaged();
+    }
+
+    private void ExecuteCloseApplication()
+    {
+        _eventService?.RunCloseApplication();
+    }
+
+    private void ExecuteSetWindowMinimize()
+    {
+        _eventService?.RunSetWindowMinimize();
+    }
+
+    private void ExecuteSetWindowRestore()
+    {
+        _eventService?.RunSetWindowRestore();
     }
 }
