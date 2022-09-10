@@ -9,11 +9,16 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Column="2"
                    Text="{Binding CurrentTime}"
                    Foreground="{StaticResource ForeGround}"/>
+
+        <TextBlock Grid.Column="3"
+                   Text="{Binding CurrentVersion}"
+                   Foreground="{StaticResource ForeGround}"
+                   Margin="10 0"/>
     </Grid>
 </UserControl>

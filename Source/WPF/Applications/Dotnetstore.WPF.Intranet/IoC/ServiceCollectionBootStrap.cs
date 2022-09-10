@@ -10,6 +10,7 @@ internal static class ServiceCollectionBootStrap
 {
     internal static void Build(ref IServiceCollection serviceCollection, string httpDotnetstoreWebAPIClientName, string httpDotnetstoreWebAPIClientBaseAddress)
     {
+        Dotnetstore.WPF.Nuget.Core.IoC.ServiceCollectionBootStrap.Build(ref serviceCollection);
         //UnitOfWorks.IoC.ServiceCollectionBootStrap.Build(ref serviceCollection, httpDotnetstoreWebAPIClientName, httpDotnetstoreWebAPIClientBaseAddress);
 
         serviceCollection.AddSingleton<IApplicationService, ApplicationService>();
