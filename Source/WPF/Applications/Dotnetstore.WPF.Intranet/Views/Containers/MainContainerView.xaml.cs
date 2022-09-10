@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Dotnetstore.WPF.Intranet.Views.Containers
@@ -8,6 +9,12 @@ namespace Dotnetstore.WPF.Intranet.Views.Containers
         public MainContainerView()
         {
             InitializeComponent();
+            Closing += OnClosing;
+        }
+
+        private static void OnClosing(object? sender, CancelEventArgs e)
+        {
+            e.Cancel = true;
         }
 
         private void MainContainerView_OnMouseDown(object sender, MouseButtonEventArgs e)

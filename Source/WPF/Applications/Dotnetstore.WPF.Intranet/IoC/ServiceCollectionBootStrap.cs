@@ -13,9 +13,12 @@ internal static class ServiceCollectionBootStrap
         //UnitOfWorks.IoC.ServiceCollectionBootStrap.Build(ref serviceCollection, httpDotnetstoreWebAPIClientName, httpDotnetstoreWebAPIClientBaseAddress);
 
         serviceCollection.AddSingleton<IApplicationService, ApplicationService>();
+        serviceCollection.AddSingleton<IEventService, EventService>();
 
         serviceCollection.AddSingleton<IMainContainerViewModel, MainContainerViewModel>();
+        serviceCollection.AddSingleton<ITopContainerViewModel, TopContainerViewModel>();
 
         serviceCollection.AddSingleton<MainContainerView>();
+        serviceCollection.AddSingleton<TopContainerView>();
     }
 }
