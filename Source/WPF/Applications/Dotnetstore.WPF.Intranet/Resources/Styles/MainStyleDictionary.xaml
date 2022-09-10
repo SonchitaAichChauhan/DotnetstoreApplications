@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:Dotnetstore.WPF.Intranet.ViewModels.Containers"
+                    xmlns:views="clr-namespace:Dotnetstore.WPF.Intranet.Views.Containers">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Dotnetstore.WPF.Intranet;component/Resources/Styles/CustomControlsDictionary.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Dotnetstore.WPF.Intranet;component/Resources/Styles/WindowDictionary.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <DataTemplate DataType="{x:Type viewModels:MainContainerViewModel}">
+        <views:MainContainerView />
+    </DataTemplate>
+</ResourceDictionary>

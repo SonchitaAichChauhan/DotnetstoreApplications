@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\WebAPI\Nugets\Dotnetstore.WebAPI.Nuget.Intranet.Dto\Dotnetstore.WebAPI.Nuget.Intranet.Dto.csproj" />
+    <ProjectReference Include="..\Dotnetstore.API.Business\Dotnetstore.API.Business.csproj" />
+  </ItemGroup>
+
+</Project>
