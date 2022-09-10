@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Dotnetstore.WPF.Intranet.ViewModels.Containers;
 
-public interface IMainContainerViewModel : IBaseViewModel
+public interface IBottomContainerViewModel : IBaseViewModel
 {
     Task LoadAsync();
 }

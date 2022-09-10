@@ -25,8 +25,13 @@ public partial class App
         _applicationService = new ApplicationService();
     }
 
-    private void RunApplication()
+    private async void RunApplication()
     {
-        _applicationService?.Run();
+        if (_applicationService == null)
+        {
+            return;
+        }
+
+        await _applicationService.RunAsync();
     }
 }

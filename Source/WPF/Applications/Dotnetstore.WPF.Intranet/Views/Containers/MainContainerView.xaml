@@ -52,7 +52,9 @@
                 </Grid>
 
                 <Grid Grid.Row="2"
-                      Background="{StaticResource BackGroundSecondary}"></Grid>
+                      Background="{StaticResource BackGroundSecondary}">
+                    <containers:BottomContainerView DataContext="{Binding CurrentBottomContainerViewModel}" />
+                </Grid>
             </Grid>
         </Border>
     </Grid>

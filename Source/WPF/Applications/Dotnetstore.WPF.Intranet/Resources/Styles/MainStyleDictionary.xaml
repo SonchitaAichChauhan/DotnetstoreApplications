@@ -13,4 +13,7 @@
     <DataTemplate DataType="{x:Type viewModels:TopContainerViewModel}">
         <views:TopContainerView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:BottomContainerViewModel}">
+        <views:BottomContainerView />
+    </DataTemplate>
 </ResourceDictionary>

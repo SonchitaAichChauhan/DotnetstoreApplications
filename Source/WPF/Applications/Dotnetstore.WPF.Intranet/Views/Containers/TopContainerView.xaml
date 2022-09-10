@@ -31,11 +31,13 @@
                     Orientation="Horizontal">
             <Button ToolTip="Minimize"
                     Style="{StaticResource TopButtonStyle}"
+                    VerticalContentAlignment="Bottom"
                     Command="{Binding SetWindowMinimizeCommand}">
                 <materialDesign:PackIcon Kind="WindowMinimize"
                                          Width="16"
                                          Height="16"
-                                         Foreground="{StaticResource ForeGround}"/>
+                                         Foreground="{StaticResource ForeGround}"
+                                         VerticalAlignment="Bottom"/>
             </Button>
             <Button ToolTip="Restore"
                     Style="{StaticResource TopButtonStyle}"

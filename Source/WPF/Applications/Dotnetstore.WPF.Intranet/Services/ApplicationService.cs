@@ -5,6 +5,7 @@ using Dotnetstore.WPF.Nuget.Core.Abstracts;
 using Dotnetstore.WPF.Nuget.Core.Interfaces;
 using Dotnetstore.WPF.Nuget.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 
 namespace Dotnetstore.WPF.Intranet.Services;
 
@@ -35,13 +36,15 @@ public class ApplicationService : Disposable, IApplicationService
         return LoadIoC();
     }
 
-    void IApplicationService.Run()
+    async Task IApplicationService.RunAsync()
     {
-        if (_mainContainerView == null)
+        if (_mainContainerView == null ||
+            _mainContainerViewModel == null)
         {
             return;
         }
 
+        await _mainContainerViewModel.LoadAsync();
         _mainContainerView.DataContext = _mainContainerViewModel;
         _mainContainerView.Show();
     }

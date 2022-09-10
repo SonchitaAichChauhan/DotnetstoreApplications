@@ -1,5 +1,7 @@
-﻿namespace Dotnetstore.WPF.Intranet.ViewModels.Containers;
+﻿using Dotnetstore.WPF.Nuget.Core.ViewModels;
 
-public interface ITopContainerViewModel
+namespace Dotnetstore.WPF.Intranet.ViewModels.Containers;
+
+public interface ITopContainerViewModel : IBaseViewModel
 {
 }
