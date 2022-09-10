@@ -7,8 +7,15 @@ public class EventService : IEventService
 {
     public event EventHandler? CloseApplication;
 
+    public event EventHandler? SetWindowRestore;
+
     void IEventService.RunCloseApplication()
     {
         CloseApplication?.Invoke(this, EventArgs.Empty);
+    }
+
+    void IEventService.RunSetWindowRestore()
+    {
+        SetWindowRestore?.Invoke(this, EventArgs.Empty);
     }
 }

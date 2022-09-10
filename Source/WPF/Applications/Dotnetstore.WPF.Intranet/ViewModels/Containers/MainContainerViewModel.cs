@@ -14,6 +14,9 @@ public partial class MainContainerViewModel : BaseViewModel, IMainContainerViewM
     [ObservableProperty]
     private ITopContainerViewModel _topContainerViewModel;
 
+    [ObservableProperty]
+    private WindowState _windowState;
+
     public MainContainerViewModel(
         IEventService eventService,
         ITopContainerViewModel topContainerViewModel)
@@ -21,9 +24,16 @@ public partial class MainContainerViewModel : BaseViewModel, IMainContainerViewM
         _eventService = eventService;
         _topContainerViewModel = topContainerViewModel;
 
+        WindowState = WindowState.Maximized;
         CloseApplicationCommand = new RelayCommand(ExecuteCloseApplication);
 
         _eventService.CloseApplication += EventServiceOnCloseApplication;
+        _eventService.SetWindowRestore += EventServiceOnSetWindowRestore;
+    }
+
+    private void EventServiceOnSetWindowRestore(object? sender, EventArgs e)
+    {
+        SetRestoreWindow();
     }
 
     public IRelayCommand? CloseApplicationCommand { get; set; }
@@ -47,6 +57,11 @@ public partial class MainContainerViewModel : BaseViewModel, IMainContainerViewM
         }
 
         base.DisposeManaged();
+    }
+
+    private void SetRestoreWindow()
+    {
+        WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
     }
 
     private static void CloseApplication()
