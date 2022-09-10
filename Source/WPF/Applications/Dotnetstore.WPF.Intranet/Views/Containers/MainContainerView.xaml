@@ -1,0 +1,51 @@
+﻿<Window x:Class="Dotnetstore.WPF.Intranet.Views.Containers.MainContainerView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:customControls="clr-namespace:Dotnetstore.WPF.CustomControls;assembly=Dotnetstore.WPF.CustomControls"
+        mc:Ignorable="d" MouseDown="MainContainerView_OnMouseDown" WindowStartupLocation="CenterScreen"
+        x:Name="ResponsiveWindow" Style="{StaticResource WindowStyle}">
+    <Grid>
+        <Border Background="{StaticResource BackGroundMain}"
+                BorderBrush="{StaticResource BackGroundSecondary}"
+                BorderThickness="5"
+                CornerRadius="8">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="20"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0"
+                      Background="{StaticResource BackGroundSecondary}"></Grid>
+
+                <Grid Grid.Row="1"
+                      Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <customControls:HamburgerMenu Grid.Column="0"
+                                                  HamburgerMenuBackground="{StaticResource DarkLightColor}">
+                        <customControls:HamburgerMenu.Content>
+                            <StackPanel>
+                                <customControls:MenuItem MenuItemText="Login"
+                                                         MenuItemIcon="Login"
+                                                         Style="{StaticResource MenuItemStyle}"/>
+                                <customControls:MenuItem MenuItemText="Register"
+                                                         MenuItemIcon="Register"
+                                                         Style="{StaticResource MenuItemStyle}"/>
+                            </StackPanel>
+                        </customControls:HamburgerMenu.Content>
+                    </customControls:HamburgerMenu>
+                </Grid>
+
+                <Grid Grid.Row="2"
+                      Background="{StaticResource BackGroundSecondary}"></Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
