@@ -4,8 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:customControls="clr-namespace:Dotnetstore.WPF.CustomControls;assembly=Dotnetstore.WPF.CustomControls"
+        xmlns:containers="clr-namespace:Dotnetstore.WPF.Intranet.Views.Containers"
         mc:Ignorable="d" MouseDown="MainContainerView_OnMouseDown" WindowStartupLocation="CenterScreen"
         x:Name="ResponsiveWindow" Style="{StaticResource WindowStyle}">
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Alt"
+                    Key="F4"
+                    Command="{Binding Path=CloseApplicationCommand}" />
+    </Window.InputBindings>
     <Grid>
         <Border Background="{StaticResource BackGroundMain}"
                 BorderBrush="{StaticResource BackGroundSecondary}"
@@ -19,7 +25,9 @@
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0"
-                      Background="{StaticResource BackGroundSecondary}"></Grid>
+                      Background="{StaticResource BackGroundSecondary}">
+                    <containers:TopContainerView DataContext="{Binding TopContainerViewModel}" />
+                </Grid>
 
                 <Grid Grid.Row="1"
                       Background="Transparent">
