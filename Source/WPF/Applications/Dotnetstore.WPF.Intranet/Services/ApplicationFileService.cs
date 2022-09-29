@@ -38,6 +38,10 @@ public class ApplicationFileService : Disposable, IApplicationFileService
 
     string? IApplicationFileService.SettingsFolderPath => _settingsFolderPath;
 
+#pragma warning disable CS8603
+    string IApplicationFileService.ApplicationName => _applicationName;
+#pragma warning restore CS8603
+
     protected override void DisposeManaged()
     {
         if (!IsDisposed)

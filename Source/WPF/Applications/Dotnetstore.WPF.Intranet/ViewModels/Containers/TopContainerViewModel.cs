@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Dotnetstore.WPF.API.Settings.Interfaces;
 using Dotnetstore.WPF.Intranet.Interfaces;
 using Dotnetstore.WPF.Nuget.Core.Interfaces;
@@ -9,13 +10,16 @@ using System.Linq;
 
 namespace Dotnetstore.WPF.Intranet.ViewModels.Containers;
 
-public class TopContainerViewModel : BaseViewModel, ITopContainerViewModel
+public sealed partial class TopContainerViewModel : BaseViewModel, ITopContainerViewModel
 {
     private IApplicationFileService? _applicationFileService;
     private ICultureService? _cultureService;
     private IEventService? _eventService;
     private IPersonalSettingService? _personalSettingService;
     private CultureInfo? _selectedCultureInfo;
+
+    [ObservableProperty]
+    private string? _applicationName;
 
     public TopContainerViewModel(
         IApplicationFileService applicationFileService,
@@ -57,6 +61,7 @@ public class TopContainerViewModel : BaseViewModel, ITopContainerViewModel
     {
         LoadCultureInfos();
         SetCurrentCultureInfo();
+        SetApplicationName();
     }
 
     protected override void DisposeManaged()
@@ -75,6 +80,7 @@ public class TopContainerViewModel : BaseViewModel, ITopContainerViewModel
             CultureInfos = null;
             SelectedCultureInfo = null;
             CultureInfoArray = null;
+            ApplicationName = null;
         }
 
         base.DisposeManaged();
@@ -159,5 +165,10 @@ public class TopContainerViewModel : BaseViewModel, ITopContainerViewModel
         }
 
         SelectedCultureInfo = CultureInfoArray.FirstOrDefault(q => q.Name == personalSettings.Culture);
+    }
+
+    private void SetApplicationName()
+    {
+        ApplicationName = _applicationFileService?.ApplicationName;
     }
 }

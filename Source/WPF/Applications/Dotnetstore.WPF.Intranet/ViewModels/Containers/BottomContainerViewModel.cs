@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Dotnetstore.WPF.Intranet.ViewModels.Containers;
 
-public partial class BottomContainerViewModel : BaseViewModel, IBottomContainerViewModel
+public sealed partial class BottomContainerViewModel : BaseViewModel, IBottomContainerViewModel
 {
     private readonly PeriodicTimer? _periodicTimer = new(TimeSpan.FromSeconds(1));
     private IApplicationFileService? _applicationFileService;

@@ -89,5 +89,12 @@
                                          Foreground="{StaticResource ForeGround}"/>
             </Button>
         </StackPanel>
+
+        <TextBlock Grid.Column="0"
+                   Grid.Row="1"
+                   Text="{Binding ApplicationName}"
+                   FontSize="26"
+                   FontWeight="Bold"
+                   Margin="10 10 0 0"/>
     </Grid>
 </UserControl>

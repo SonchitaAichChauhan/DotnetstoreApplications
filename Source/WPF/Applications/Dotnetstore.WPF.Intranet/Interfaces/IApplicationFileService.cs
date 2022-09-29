@@ -13,4 +13,6 @@ public interface IApplicationFileService
     string? AppSettingFile { get; }
 
     string? PersonalSettingFile { get; }
+
+    string ApplicationName { get; }
 }
