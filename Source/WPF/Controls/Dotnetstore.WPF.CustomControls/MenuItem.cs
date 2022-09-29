@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace Dotnetstore.WPF.CustomControls
 {
-    public class MenuItem : Button
+    public sealed class MenuItem : Button
     {
         public static readonly DependencyProperty MenuItemFontSizeProperty = DependencyProperty.Register(
             "MenuItemFontSize", typeof(double), typeof(MenuItem), new PropertyMetadata(null));

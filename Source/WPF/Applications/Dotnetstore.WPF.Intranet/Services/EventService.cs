@@ -3,7 +3,7 @@ using System;
 
 namespace Dotnetstore.WPF.Intranet.Services;
 
-public class EventService : IEventService
+public sealed class EventService : IEventService
 {
     public event EventHandler? CloseApplication;
 

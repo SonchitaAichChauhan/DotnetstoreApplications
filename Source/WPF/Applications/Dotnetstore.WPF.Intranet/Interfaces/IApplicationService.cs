@@ -4,7 +4,9 @@ namespace Dotnetstore.WPF.Intranet.Interfaces;
 
 public interface IApplicationService
 {
-    IApplicationService? LoadSettings();
+    (ISetupService? setupService, IApplicationService? applicationService) Load();
+
+    void LoadCulture();
 
     Task RunAsync();
 }

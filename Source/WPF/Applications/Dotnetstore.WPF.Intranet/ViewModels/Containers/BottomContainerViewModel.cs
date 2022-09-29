@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Dotnetstore.WPF.Nuget.Core.Interfaces;
+using Dotnetstore.WPF.API.Settings.Interfaces;
+using Dotnetstore.WPF.Intranet.Interfaces;
 using Dotnetstore.WPF.Nuget.Core.ViewModels;
 using System;
 using System.Threading;
@@ -9,7 +10,10 @@ namespace Dotnetstore.WPF.Intranet.ViewModels.Containers;
 
 public partial class BottomContainerViewModel : BaseViewModel, IBottomContainerViewModel
 {
-    private IJsonSettingFileReaderService? _jsonSettingFileReaderService;
+    private readonly PeriodicTimer? _periodicTimer = new(TimeSpan.FromSeconds(1));
+    private IApplicationFileService? _applicationFileService;
+    private IAppSettingService? _appSettingService;
+    private CancellationTokenSource? _cts;
 
     [ObservableProperty]
     private string? _currentTime;
@@ -17,23 +21,43 @@ public partial class BottomContainerViewModel : BaseViewModel, IBottomContainerV
     [ObservableProperty]
     private string? _currentVersion;
 
-    private readonly PeriodicTimer? _periodicTimer = new(TimeSpan.FromSeconds(1));
-
     private Task? _timerTask;
 
-    private CancellationTokenSource? _cts;
+    public BottomContainerViewModel(
+        IApplicationFileService applicationFileService,
+        IAppSettingService appSettingService)
+    {
+        _applicationFileService = applicationFileService;
+        _appSettingService = appSettingService;
+    }
 
     public void Cancel() => _cts?.Cancel();
 
-    public BottomContainerViewModel(
-        IJsonSettingFileReaderService jsonSettingFileReaderService)
+    void IBottomContainerViewModel.Load()
     {
-        _jsonSettingFileReaderService = jsonSettingFileReaderService;
+        LoadCurrentTimeText();
+        LoadCurrentVersionText();
+    }
+
+    protected override void DisposeManaged()
+    {
+        if (!IsDisposed)
+        {
+            _periodicTimer?.Dispose();
+            _timerTask?.ConfigureAwait(false);
+            _appSettingService = null;
+            _applicationFileService = null;
+
+            CurrentTime = null;
+            CurrentVersion = null;
+        }
+
+        base.DisposeManaged();
     }
 
     private async Task HandleTimerAsync(CancellationToken cancel = default)
     {
-        if (_periodicTimer == null)
+        if (_periodicTimer is null)
         {
             return;
         }
@@ -44,12 +68,6 @@ public partial class BottomContainerViewModel : BaseViewModel, IBottomContainerV
         }
     }
 
-    async Task IBottomContainerViewModel.LoadAsync()
-    {
-        LoadCurrentTimeText();
-        LoadCurrentVersionText();
-    }
-
     private void LoadCurrentTimeText()
     {
         _cts = new CancellationTokenSource();
@@ -58,26 +76,21 @@ public partial class BottomContainerViewModel : BaseViewModel, IBottomContainerV
 
     private void LoadCurrentVersionText()
     {
-        if (_jsonSettingFileReaderService == null)
+        if (_appSettingService is null ||
+            _applicationFileService is null)
         {
             return;
         }
 
-        var version = _jsonSettingFileReaderService.GetString("CurrentVersion");
-        CurrentVersion = $"Version: {version}";
-    }
+        var appSettingFile = _applicationFileService.AppSettingFile;
 
-    protected override void DisposeManaged()
-    {
-        if (!IsDisposed)
+        if (string.IsNullOrWhiteSpace(appSettingFile))
         {
-            _periodicTimer?.Dispose();
-            _timerTask?.ConfigureAwait(false);
-
-            CurrentTime = null;
-            CurrentVersion = null;
+            return;
         }
 
-        base.DisposeManaged();
+        var appSettings = _appSettingService.Get(appSettingFile);
+        var version = appSettings?.CurrentVersion;
+        CurrentVersion = $"Version: {version}";
     }
 }

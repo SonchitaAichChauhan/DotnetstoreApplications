@@ -1,45 +1,74 @@
-﻿using Dotnetstore.WPF.Intranet.Interfaces;
+﻿using Dotnetstore.WPF.API.Settings.Interfaces;
+using Dotnetstore.WPF.Intranet.Interfaces;
 using Dotnetstore.WPF.Intranet.ViewModels.Containers;
 using Dotnetstore.WPF.Intranet.Views.Containers;
 using Dotnetstore.WPF.Nuget.Core.Abstracts;
 using Dotnetstore.WPF.Nuget.Core.Interfaces;
-using Dotnetstore.WPF.Nuget.Core.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Threading.Tasks;
 
 namespace Dotnetstore.WPF.Intranet.Services;
 
-public class ApplicationService : Disposable, IApplicationService
+public sealed class ApplicationService : Disposable, IApplicationService
 {
-    private string? _httpDotnetstoreWebAPIClientBaseAddress;
-    private string? _httpDotnetstoreWebAPIClientName;
-    private IJsonSettingFileReaderService? _jsonSettingFileReaderService;
+    private IApplicationFileService? _applicationFileService;
+    private IConfiguration? _configuration;
+    private ICultureService? _cultureService;
     private MainContainerView? _mainContainerView;
     private IMainContainerViewModel? _mainContainerViewModel;
+    private IPersonalSettingService? _personalSettingService;
 
     public ApplicationService()
     {
     }
 
     public ApplicationService(
+        IApplicationFileService applicationFileService,
+        IConfiguration configuration,
         IMainContainerViewModel mainContainerViewModel,
+        IPersonalSettingService personalSettingService,
         MainContainerView mainContainerView)
     {
+        _applicationFileService = applicationFileService;
+        _configuration = configuration;
         _mainContainerViewModel = mainContainerViewModel;
+        _personalSettingService = personalSettingService;
         _mainContainerView = mainContainerView;
     }
 
-    IApplicationService? IApplicationService.LoadSettings()
+    (ISetupService? setupService, IApplicationService? applicationService) IApplicationService.Load()
     {
-        LoadObjects();
-        LoadSettingParameters();
+        LoadConfig();
         return LoadIoC();
+    }
+
+    void IApplicationService.LoadCulture()
+    {
+        if (_cultureService is null ||
+            _personalSettingService is null ||
+            _applicationFileService is null)
+        {
+            return;
+        }
+
+        var personalSettingFile = _applicationFileService.PersonalSettingFile;
+
+        if (string.IsNullOrWhiteSpace(personalSettingFile))
+        {
+            return;
+        }
+
+        var personalSetting = _personalSettingService.Get(personalSettingFile);
+        var culture = personalSetting?.Culture;
+        _cultureService.SetCulture(string.IsNullOrWhiteSpace(culture) ? "en-US" : culture);
     }
 
     async Task IApplicationService.RunAsync()
     {
-        if (_mainContainerView == null ||
-            _mainContainerViewModel == null)
+        if (_mainContainerView is null ||
+            _mainContainerViewModel is null)
         {
             return;
         }
@@ -53,46 +82,46 @@ public class ApplicationService : Disposable, IApplicationService
     {
         if (!IsDisposed)
         {
+            _applicationFileService = null;
             _mainContainerViewModel = null;
             _mainContainerView = null;
-            _jsonSettingFileReaderService = null;
-
-            _httpDotnetstoreWebAPIClientName = null;
-            _httpDotnetstoreWebAPIClientBaseAddress = null;
+            _cultureService = null;
+            _personalSettingService = null;
         }
 
         base.DisposeManaged();
     }
 
-    private IApplicationService? LoadIoC()
+    private void LoadConfig()
     {
-        if (string.IsNullOrWhiteSpace(_httpDotnetstoreWebAPIClientName) ||
-            string.IsNullOrWhiteSpace(_httpDotnetstoreWebAPIClientBaseAddress))
-            return new ApplicationService();
-
-        IServiceCollection serviceCollection = new ServiceCollection();
-        IoC.ServiceCollectionBootStrap.Build(ref serviceCollection, _httpDotnetstoreWebAPIClientName, _httpDotnetstoreWebAPIClientBaseAddress);
-        var serviceProvider = serviceCollection.BuildServiceProvider();
-
-        var applicationService = serviceProvider.GetService<IApplicationService>();
-        return applicationService;
+        _configuration = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
     }
 
-    private void LoadObjects()
+    private (ISetupService? setupService, IApplicationService? applicationService) LoadIoC()
     {
-        IConfigurationBuilderSingletonService configurationBuilderSingletonService =
-            new ConfigurationBuilderSingletonService();
-        _jsonSettingFileReaderService = new JsonSettingFileReaderService(configurationBuilderSingletonService);
-    }
-
-    private void LoadSettingParameters()
-    {
-        if (_jsonSettingFileReaderService == null)
+        if (_configuration is null)
         {
-            return;
+            return (null, null);
         }
 
-        _httpDotnetstoreWebAPIClientName = _jsonSettingFileReaderService.GetString("API:DotnetstoreIntranet:HttpDotnetstoreWebAPIClientName");
-        _httpDotnetstoreWebAPIClientBaseAddress = _jsonSettingFileReaderService.GetString("API:DotnetstoreIntranet:HttpDotnetstoreWebAPIClientBaseAddress");
+        IServiceCollection serviceCollection = new ServiceCollection();
+        serviceCollection.AddSingleton(_configuration);
+
+        var httpDotnetstoreWebAPIClientName = _configuration.GetSection("API:DotnetstoreIntranet:HttpDotnetstoreWebAPIClientName").Value;
+        var httpDotnetstoreWebAPIClientBaseAddress = _configuration.GetSection("API:DotnetstoreIntranet:HttpDotnetstoreWebAPIClientBaseAddress").Value;
+
+        if (string.IsNullOrWhiteSpace(httpDotnetstoreWebAPIClientName) ||
+            string.IsNullOrWhiteSpace(httpDotnetstoreWebAPIClientBaseAddress))
+        {
+            return (null, null);
+        }
+
+        IoC.ServiceCollectionBootStrap.Build(ref serviceCollection, httpDotnetstoreWebAPIClientName, httpDotnetstoreWebAPIClientBaseAddress);
+
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        return (serviceProvider.GetService<ISetupService>(), serviceProvider.GetService<IApplicationService>());
     }
 }

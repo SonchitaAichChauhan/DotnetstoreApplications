@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace Dotnetstore.WPF.CustomControls
 {
-    public class HamburgerMenu : Control
+    public sealed class HamburgerMenu : Control
     {
         static HamburgerMenu()
         {

@@ -18,6 +18,9 @@ public partial class MainContainerViewModel : BaseViewModel, IMainContainerViewM
     private IBottomContainerViewModel? _currentBottomContainerViewModel;
 
     [ObservableProperty]
+    private ITopContainerViewModel? _currentTopContainerViewModel;
+
+    [ObservableProperty]
     private ITopContainerViewModel? _topContainerViewModel;
 
     [ObservableProperty]
@@ -44,17 +47,29 @@ public partial class MainContainerViewModel : BaseViewModel, IMainContainerViewM
 
     async Task IMainContainerViewModel.LoadAsync()
     {
-        await LoadIBottomContainerViewModelAsync();
+        LoadITopContainerViewModel();
+        LoadIBottomContainerViewModel();
     }
 
-    private async Task LoadIBottomContainerViewModelAsync()
+    private void LoadITopContainerViewModel()
     {
-        if (_bottomContainerViewModel == null)
+        if (_topContainerViewModel is null)
         {
             return;
         }
 
-        await _bottomContainerViewModel.LoadAsync();
+        _topContainerViewModel.Load();
+        CurrentTopContainerViewModel = _topContainerViewModel;
+    }
+
+    private void LoadIBottomContainerViewModel()
+    {
+        if (_bottomContainerViewModel is null)
+        {
+            return;
+        }
+
+        _bottomContainerViewModel.Load();
         CurrentBottomContainerViewModel = _bottomContainerViewModel;
     }
 
