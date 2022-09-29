@@ -47,7 +47,7 @@ public abstract class Disposable : IDisposable
 
         IsDisposed = true;
 
-        if (_whenDisposedSubject == null) return;
+        if (_whenDisposedSubject is null) return;
         _whenDisposedSubject.OnNext(Unit.Default);
         _whenDisposedSubject.OnCompleted();
         _whenDisposedSubject.Dispose();

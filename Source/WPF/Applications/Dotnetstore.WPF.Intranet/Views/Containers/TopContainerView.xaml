@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converters="clr-namespace:Dotnetstore.WPF.Intranet.Converters"
              mc:Ignorable="d">
     <UserControl.Resources>
+        <converters:CultureInfoTextEnglishNameNativeNameConverter x:Key="CultureInfoTextEnglishNameNativeNameConverter"/>
         <Style x:Key="TopButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
@@ -19,6 +21,11 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -26,7 +33,33 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="1"
+        <ComboBox Grid.Column="2"
+                  Grid.Row="0"
+                  ItemsSource="{Binding CultureInfos, 
+                                        Mode=TwoWay,
+                                        NotifyOnSourceUpdated=True, 
+                                        NotifyOnValidationError=True, 
+                                        NotifyOnTargetUpdated=True, 
+                                        ValidatesOnDataErrors=True, 
+                                        ValidatesOnExceptions=True, 
+                                        ValidatesOnNotifyDataErrors=True, 
+                                        UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SelectedCultureInfo}">
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" />
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Converter={StaticResource CultureInfoTextEnglishNameNativeNameConverter}}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <StackPanel Grid.Column="6"
                     Grid.Row="0"
                     Orientation="Horizontal">
             <Button ToolTip="Minimize"

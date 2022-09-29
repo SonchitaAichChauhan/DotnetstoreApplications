@@ -5,7 +5,7 @@ using System.Windows.Data;
 namespace Dotnetstore.WPF.Intranet.Services;
 
 // IsLessThanConverter //
-public class IsLessThanConverter : IValueConverter
+public sealed class IsLessThanConverter : IValueConverter
 {
     public static readonly IValueConverter Instance = new IsLessThanConverter();
 
@@ -24,7 +24,7 @@ public class IsLessThanConverter : IValueConverter
 }
 
 // IsGreaterThanConverter //
-public class IsGreaterThanConverter : IValueConverter
+public sealed class IsGreaterThanConverter : IValueConverter
 {
     public static readonly IValueConverter Instance = new IsGreaterThanConverter();
 

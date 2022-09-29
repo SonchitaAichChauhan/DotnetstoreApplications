@@ -8,8 +8,10 @@ public static class ServiceCollectionBootStrap
 {
     public static void Build(ref IServiceCollection serviceCollection)
     {
-        serviceCollection.AddScoped<IConfigurationBuilderSingletonService, ConfigurationBuilderSingletonService>();
+        serviceCollection.AddScoped<ICultureService, CultureService>();
+        serviceCollection.AddScoped<IFilePathService, FilePathService>();
         serviceCollection.AddScoped<IHttpService, HttpService>();
+        serviceCollection.AddScoped<IJsonService, JsonService>();
         serviceCollection.AddScoped<IJsonSettingFileReaderService, JsonSettingFileReaderService>();
     }
 }

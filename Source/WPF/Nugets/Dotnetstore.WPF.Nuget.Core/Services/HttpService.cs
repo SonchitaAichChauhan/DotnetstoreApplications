@@ -23,7 +23,7 @@ public sealed class HttpService : Disposable, IHttpService
 
     async Task<HttpResponseWrapper<object?>> IHttpService.DeleteAsync<T>(string httpClientName, string url)
     {
-        if (_httpClientFactory == null)
+        if (_httpClientFactory is null)
         {
             return new HttpResponseWrapper<object?>(false, null, new HttpResponseMessage(HttpStatusCode.InternalServerError), new Exception("HttpClientFactory is null"));
         }
@@ -42,7 +42,7 @@ public sealed class HttpService : Disposable, IHttpService
 
     async Task<HttpResponseWrapper<T?>> IHttpService.GetAsync<T>(string httpClientName, string url) where T : default
     {
-        if (_httpClientFactory == null)
+        if (_httpClientFactory is null)
         {
             return new HttpResponseWrapper<T?>(false, default, new HttpResponseMessage(HttpStatusCode.InternalServerError), new Exception("HttpClientFactory is null"));
         }
@@ -68,7 +68,7 @@ public sealed class HttpService : Disposable, IHttpService
 
     async Task<HttpResponseWrapper<object?>> IHttpService.PostAsync<T>(string httpClientName, string url, T data)
     {
-        if (_httpClientFactory == null)
+        if (_httpClientFactory is null)
         {
             return new HttpResponseWrapper<object?>(false, null, new HttpResponseMessage(HttpStatusCode.InternalServerError), new Exception("HttpClientFactory is null"));
         }
@@ -90,7 +90,7 @@ public sealed class HttpService : Disposable, IHttpService
 
     async Task<HttpResponseWrapper<TResponse?>> IHttpService.PostAsync<T, TResponse>(string httpClientName, string url, T data) where TResponse : default
     {
-        if (_httpClientFactory == null)
+        if (_httpClientFactory is null)
         {
             return new HttpResponseWrapper<TResponse?>(false, default, new HttpResponseMessage(HttpStatusCode.InternalServerError), new Exception("HttpClientFactory is null"));
         }
@@ -118,7 +118,7 @@ public sealed class HttpService : Disposable, IHttpService
 
     async Task<HttpResponseWrapper<object?>> IHttpService.PutAsync<T>(string httpClientName, string url, T data)
     {
-        if (_httpClientFactory == null)
+        if (_httpClientFactory is null)
         {
             return new HttpResponseWrapper<object?>(false, null, new HttpResponseMessage(HttpStatusCode.InternalServerError), new Exception("HttpClientFactory is null"));
         }

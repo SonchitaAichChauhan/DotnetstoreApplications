@@ -8,13 +8,29 @@ namespace Dotnetstore.WPF.Intranet.IoC;
 
 internal static class ServiceCollectionBootStrap
 {
+    internal static void Build(ref IServiceCollection serviceCollection)
+    {
+        Dotnetstore.WPF.Nuget.Core.IoC.ServiceCollectionBootStrap.Build(ref serviceCollection);
+        Dotnetstore.WPF.API.Settings.IoC.ServiceCollectionBootStrap.Build(ref serviceCollection);
+
+        RegisterInternalObjects(ref serviceCollection);
+    }
+
     internal static void Build(ref IServiceCollection serviceCollection, string httpDotnetstoreWebAPIClientName, string httpDotnetstoreWebAPIClientBaseAddress)
     {
         Dotnetstore.WPF.Nuget.Core.IoC.ServiceCollectionBootStrap.Build(ref serviceCollection);
+        Dotnetstore.WPF.API.Settings.IoC.ServiceCollectionBootStrap.Build(ref serviceCollection);
         //UnitOfWorks.IoC.ServiceCollectionBootStrap.Build(ref serviceCollection, httpDotnetstoreWebAPIClientName, httpDotnetstoreWebAPIClientBaseAddress);
 
+        RegisterInternalObjects(ref serviceCollection);
+    }
+
+    private static void RegisterInternalObjects(ref IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddSingleton<IApplicationFileService, ApplicationFileService>();
         serviceCollection.AddSingleton<IApplicationService, ApplicationService>();
         serviceCollection.AddSingleton<IEventService, EventService>();
+        serviceCollection.AddSingleton<ISetupService, SetupService>();
 
         serviceCollection.AddSingleton<IBottomContainerViewModel, BottomContainerViewModel>();
         serviceCollection.AddSingleton<IMainContainerViewModel, MainContainerViewModel>();

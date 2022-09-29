@@ -8,15 +8,15 @@ public sealed class JsonSettingFileReaderService : IJsonSettingFileReaderService
     private readonly IConfiguration? _configuration;
 
     public JsonSettingFileReaderService(
-        IConfigurationBuilderSingletonService configurationBuilderSingletonService)
+        IConfiguration configuration)
     {
-        _configuration = configurationBuilderSingletonService.ConfigurationRoot;
+        _configuration = configuration;
     }
 
     bool IJsonSettingFileReaderService.GetBoolean(string key)
     {
         if (string.IsNullOrWhiteSpace(key) ||
-            _configuration == null)
+            _configuration is null)
         {
             return false;
         }
@@ -28,7 +28,7 @@ public sealed class JsonSettingFileReaderService : IJsonSettingFileReaderService
     int IJsonSettingFileReaderService.GetInt(string key)
     {
         if (string.IsNullOrWhiteSpace(key) ||
-            _configuration == null)
+            _configuration is null)
         {
             return -1;
         }
@@ -40,7 +40,7 @@ public sealed class JsonSettingFileReaderService : IJsonSettingFileReaderService
     short IJsonSettingFileReaderService.GetInt16(string key)
     {
         if (string.IsNullOrWhiteSpace(key) ||
-            _configuration == null)
+            _configuration is null)
         {
             return -1;
         }
@@ -52,7 +52,7 @@ public sealed class JsonSettingFileReaderService : IJsonSettingFileReaderService
     string IJsonSettingFileReaderService.GetString(string key)
     {
         if (string.IsNullOrWhiteSpace(key) ||
-            _configuration == null)
+            _configuration is null)
         {
             return string.Empty;
         }
